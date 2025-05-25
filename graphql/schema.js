@@ -1,6 +1,5 @@
 import { schemaComposer } from "graphql-compose";
 import { UserTC, User } from "../models/user.js";
-import mongoose from "mongoose";
 
 // Queries
 schemaComposer.Query.addFields({
@@ -10,7 +9,6 @@ schemaComposer.Query.addFields({
 
 // Mutations
 schemaComposer.Mutation.addFields({
-  createUser: UserTC.getResolver("createOne"),
   updateUser: UserTC.getResolver("updateById"),
   deleteUser: UserTC.getResolver("removeById"),
 
