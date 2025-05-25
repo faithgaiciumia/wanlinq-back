@@ -5,6 +5,14 @@ import { UserTC, User } from "../models/user.js";
 schemaComposer.Query.addFields({
   getUsers: UserTC.getResolver("findMany"),
   getUserById: UserTC.getResolver("findById"),
+  getUserByEmail: {
+    type: UserTC,
+    args: { email: "String!" },
+    resolve: async (_, { email }) => {
+      console.log("Resolver args:", email);
+      return await User.findOne({ email: email });
+    },
+  },
 });
 
 // Mutations
