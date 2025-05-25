@@ -1,6 +1,6 @@
-const { schemaComposer } = require("graphql-compose");
-const { UserTC, User } = require("../models/user");
-const mongoose = require("mongoose");
+import { schemaComposer } from "graphql-compose";
+import { UserTC, User } from "../models/user.js";
+import mongoose from "mongoose";
 
 // Queries
 schemaComposer.Query.addFields({
@@ -66,11 +66,11 @@ schemaComposer.Mutation.addFields({
       const link = user.links.id(args.linkId);
       if (!link) throw new Error("Link not found");
 
-      link.remove(); // remove subdocument 
+      link.remove();
       await user.save();
       return user;
     },
   },
 });
 
-module.exports = schemaComposer.buildSchema();
+export default schemaComposer.buildSchema();

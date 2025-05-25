@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const { composeWithMongoose } = require("graphql-compose-mongoose");
-const { Schema, model } = mongoose;
+import mongoose from "mongoose";
+import { composeWithMongoose } from "graphql-compose-mongoose";
+import { Schema, model } from "mongoose";
 
 const LinkSchema = new Schema(
   {
@@ -23,4 +23,4 @@ const User = model("User", UserSchema);
 
 const UserTC = composeWithMongoose(User);
 
-module.exports = { User, UserTC };
+export { User, UserTC };
