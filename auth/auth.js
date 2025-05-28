@@ -35,7 +35,7 @@ export default ExpressAuth({
   callbacks: {
     async redirect({ url }) {
       // If a callbackUrl is provided, return it
-      const frontend = "http://localhost:5173"; 
+      const frontend = "http://localhost:5173/home"; 
       if (url.startsWith(frontend)) return url;
       return frontend;
     },
