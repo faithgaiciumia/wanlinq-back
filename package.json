@@ -14,6 +14,7 @@
     "@auth/express": "^0.10.1",
     "@auth/mongodb-adapter": "^3.9.1",
     "apollo-server-express": "^3.13.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^4.18.2",
     "graphql-compose": "^9.1.0",

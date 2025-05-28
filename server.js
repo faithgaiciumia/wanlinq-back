@@ -1,3 +1,4 @@
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
@@ -10,6 +11,7 @@ dotenv.config();
 const app = express();
 app.set("trust proxy", true);
 app.use("/auth/*", auth);
+app.use(cors());
 
 const server = new ApolloServer({
   schema,
