@@ -10,8 +10,13 @@ dotenv.config();
 
 const app = express();
 app.set("trust proxy", true);
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use("/auth/*", auth);
-app.use(cors());
 
 const server = new ApolloServer({
   schema,
