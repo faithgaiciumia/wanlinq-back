@@ -18,14 +18,26 @@ export default ExpressAuth({
       type: "email",
       name: "Email",
       async sendVerificationRequest({ identifier: email, url }) {
+        //redirect user to frontend
+        const updatedUrl = new URL(url);
+        updatedUrl.searchParams.set("callbackUrl", "http://localhost:5173");
+
         await resend.emails.send({
           from: "Wanlinq@login.gaiciumiafaith.com",
           to: [email],
           subject: "Your Magic Link for WanLinq",
-          html: `<p>Click <a href="${url}">here</a> to log in.</p>`,
+          html: `<p>Click <a href="${updatedUrl.href}">here</a> to log in.</p>`,
         });
       },
     },
   ],
   secret: process.env.AUTH_SECRET,
+  callbacks: {
+    async redirect({ url }) {
+      // If a callbackUrl is provided, return it
+      const frontend = "http://localhost:5173"; 
+      if (url.startsWith(frontend)) return url;
+      return frontend;
+    },
+  },
 });
