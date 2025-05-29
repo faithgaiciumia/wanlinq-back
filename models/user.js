@@ -17,6 +17,13 @@ const UserSchema = new Schema({
   themeColor: String,
   isPublic: { type: Boolean, default: true },
   bio: String,
+  username:{
+    type:String,
+    unique:true,
+    sparse:true,
+    trim:true,
+    lowercase:true
+  }
 });
 
 const User = model("User", UserSchema, "users");
