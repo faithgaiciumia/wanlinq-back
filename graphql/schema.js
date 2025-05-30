@@ -9,7 +9,6 @@ schemaComposer.Query.addFields({
     type: UserTC,
     args: { email: "String!" },
     resolve: async (_, { email }) => {
-      console.log("Resolver args:", email);
       return await User.findOne({ email: email });
     },
   },
@@ -23,6 +22,18 @@ schemaComposer.Query.addFields({
       if (!user) throw new Error("User not found");
 
       return user;
+    },
+  },
+
+  isUsernameAvailable: {
+    type: "Boolean!",
+    args: {
+      username: "String!",
+    },
+    resolve: async (_, { username }) => {
+      const user = await User.findOne({ username: username });
+      console.log("user is", user);
+      return !user; // true if available, false if taken
     },
   },
 });
@@ -53,7 +64,7 @@ schemaComposer.Mutation.addFields({
     args: { username: "String!" },
     resolve: async (_, { username }, { user }) => {
       if (!user?.email) throw new Error("Not authenticated");
-      
+
       // check if username already exists
       const existing = await User.findOne({ username });
       if (existing) throw new Error("Username already taken");

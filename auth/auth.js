@@ -34,7 +34,7 @@ const authConfig = {
   basePath: "/auth",
   callbacks: {
     async redirect({ url }) {
-      const frontend = "http://localhost:5173/home";
+      const frontend = "http://localhost:5173/";
       if (url.startsWith(frontend)) return url;
       return frontend;
     },

@@ -34,9 +34,8 @@ app.use(authSession);
 const server = new ApolloServer({
   schema,
   context: ({ res }) => {
-    const session = res.locals;
-    console.log("sesh", session?.session.user);
-    return { user: session?.session.user || null };
+    const session = res.locals.session;
+    return { user: session?.user || null };
   },
   formatError: (error) => {
     console.error(error);
