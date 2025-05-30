@@ -10,7 +10,7 @@ dotenv.config();
 const resend = new Resend(process.env.AUTH_RESEND_KEY);
 const client = new MongoClient(process.env.MONGOOSE_CONNECT_STRING);
 
-export default ExpressAuth({
+const authConfig = {
   adapter: MongoDBAdapter(client),
   providers: [
     {
@@ -18,7 +18,6 @@ export default ExpressAuth({
       type: "email",
       name: "Email",
       async sendVerificationRequest({ identifier: email, url }) {
-        //redirect user to frontend
         const updatedUrl = new URL(url);
         updatedUrl.searchParams.set("callbackUrl", "http://localhost:5173");
 
@@ -32,12 +31,17 @@ export default ExpressAuth({
     },
   ],
   secret: process.env.AUTH_SECRET,
+  basePath: "/auth",
   callbacks: {
     async redirect({ url }) {
-      // If a callbackUrl is provided, return it
-      const frontend = "http://localhost:5173/home"; 
+      const frontend = "http://localhost:5173/home";
       if (url.startsWith(frontend)) return url;
       return frontend;
     },
   },
-});
+};
+
+const auth = ExpressAuth(authConfig);
+
+export default auth;
+export { authConfig };

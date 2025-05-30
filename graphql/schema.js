@@ -13,6 +13,18 @@ schemaComposer.Query.addFields({
       return await User.findOne({ email: email });
     },
   },
+  getCurrentUser: {
+    type: UserTC,
+    resolve: async (_, __, context) => {
+      const email = context.user?.email;
+      if (!email) throw new Error("User not authenticated");
+
+      const user = await User.findOne({ email });
+      if (!user) throw new Error("User not found");
+
+      return user;
+    },
+  },
 });
 
 // Mutations
@@ -33,6 +45,24 @@ schemaComposer.Mutation.addFields({
       user.links.push({ siteName: args.siteName, siteLink: args.siteLink });
       await user.save();
       return user;
+    },
+  },
+
+  updateUserUsername: {
+    type: UserTC,
+    args: { username: "String!" },
+    resolve: async (_, { username }, { user }) => {
+      if (!user?.email) throw new Error("Not authenticated");
+      
+      // check if username already exists
+      const existing = await User.findOne({ username });
+      if (existing) throw new Error("Username already taken");
+
+      return await User.findOneAndUpdate(
+        { email: user.email },
+        { username },
+        { new: true }
+      );
     },
   },
 
