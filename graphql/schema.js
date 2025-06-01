@@ -107,14 +107,14 @@ schemaComposer.Mutation.addFields({
       userId: "ID!",
       linkId: "ID!",
     },
-    resolve: async ({ args }) => {
-      const user = await User.findById(args.userId);
+    resolve: async (_, { userId, linkId }) => {
+      const user = await User.findById(userId);
       if (!user) throw new Error("User not found");
 
-      const link = user.links.id(args.linkId);
+      const link = user.links.id(linkId);
       if (!link) throw new Error("Link not found");
 
-      link.remove();
+      user.links.pull(linkId);
       await user.save();
       return user;
     },
