@@ -50,10 +50,11 @@ schemaComposer.Mutation.addFields({
       siteName: "String!",
       siteLink: "String!",
     },
-    resolve: async ({ args }) => {
-      const user = await User.findById(args.userId);
+    resolve: async (_, { userId, siteName, siteLink }) => {
+      console.log("details passed", userId, siteName, siteLink);
+      const user = await User.findById(userId);
       if (!user) throw new Error("User not found");
-      user.links.push({ siteName: args.siteName, siteLink: args.siteLink });
+      user.links.push({ siteName: siteName, siteLink: siteLink });
       await user.save();
       return user;
     },
