@@ -78,6 +78,35 @@ schemaComposer.Mutation.addFields({
     },
   },
 
+  updateUserImageURL: {
+    type: UserTC,
+    args: { imageURL: "String!", userId: "String!" },
+    resolve: async (_, { imageURL, userId }) => {
+      return await User.findOneAndUpdate(
+        { _id: userId },
+        { imageURL },
+        { new: true }
+      );
+    },
+  },
+
+  updateUserProfileDetails: {
+    type: UserTC,
+    args: {
+      name: "String!",
+      bio: "String!",
+      imageURL: "String!",
+      userId: "String!",
+    },
+    resolve: async (_, { name, bio, imageURL, userId }) => {
+      return await User.findOneAndUpdate(
+        { _id: userId },
+        { name, bio, imageURL },
+        { new: true }
+      );
+    },
+  },
+
   editUserLink: {
     type: UserTC,
     args: {
