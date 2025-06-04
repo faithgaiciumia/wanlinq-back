@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
@@ -50,7 +51,9 @@ server.start().then(() => {
     res.send("Server up and running");
   });
 
-  app.listen(4000, () => {
-    console.log("Server running on http://localhost:4000");
+  const PORT = process.env.PORT || 4000;
+
+  app.listen(PORT, () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
   });
 });

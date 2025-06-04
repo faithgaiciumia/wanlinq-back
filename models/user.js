@@ -8,7 +8,7 @@ const LinkSchema = new Schema(
   },
   { timestamps: true }
 );
-const UserSchema = new Schema({
+const UserSchema = new Schema({ 
   links: [LinkSchema],
   name: String,
   email: String,
