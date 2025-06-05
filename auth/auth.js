@@ -32,6 +32,7 @@ const authConfig = {
   ],
   secret: process.env.AUTH_SECRET,
   basePath: "/auth",
+  trustedHosts: ["wanlinq-back.onrender.com"],
   callbacks: {
     async redirect({ url }) {
       const frontend = "http://localhost:5173/";
