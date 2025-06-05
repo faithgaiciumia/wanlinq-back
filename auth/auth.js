@@ -35,7 +35,8 @@ const authConfig = {
   basePath: "/auth",
   callbacks: {
     async redirect({ url }) {
-      const frontend = "http://localhost:5173/";
+      // const frontend = "http://localhost:5173/";
+      const frontend = "https://quicklinq.netlify.app/";
       if (url.startsWith(frontend)) return url;
       return frontend;
     },
