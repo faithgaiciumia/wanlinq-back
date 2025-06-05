@@ -11,6 +11,7 @@ const resend = new Resend(process.env.AUTH_RESEND_KEY);
 const client = new MongoClient(process.env.MONGOOSE_CONNECT_STRING);
 
 const authConfig = {
+  trustHost:true,
   adapter: MongoDBAdapter(client),
   providers: [
     {
@@ -32,7 +33,6 @@ const authConfig = {
   ],
   secret: process.env.AUTH_SECRET,
   basePath: "/auth",
-  trustedHosts: ["wanlinq-back.onrender.com"],
   callbacks: {
     async redirect({ url }) {
       const frontend = "http://localhost:5173/";
