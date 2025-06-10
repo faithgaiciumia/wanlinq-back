@@ -35,12 +35,30 @@ const authConfig = {
   basePath: "/auth",
   cookies: {
     sessionToken: {
-      name: "__Secure-authjs.session-token",
+      name: `__Secure-authjs.session-token`,
       options: {
         httpOnly: true,
-        sameSite: "none", // Needed for cross-origin
+        sameSite: "none",
         path: "/",
-        secure: true, // Required on HTTPS (Render)
+        secure: true,
+      },
+    },
+    callbackUrl: {
+      name: `__Secure-authjs.callback-url`,
+      options: {
+        sameSite: "none",
+        path: "/",
+        secure: true,
+        httpOnly: true,
+      },
+    },
+    csrfToken: {
+      name: `__Host-authjs.csrf-token`,
+      options: {
+        sameSite: "none", // THIS IS CRITICAL
+        path: "/",
+        secure: true,
+        httpOnly: true,
       },
     },
   },

@@ -13,29 +13,29 @@ dotenv.config();
 const app = express();
 app.set("trust proxy", true);
 
-// ✅ Apply CORS globally (for all routes)
+
 const allowedOrigins = ["http://localhost:5173", "https://quicklinq.netlify.app"];
 app.use(cors({
   origin: allowedOrigins,
   credentials: true,
 }));
 
-// ✅ Handle preflight (OPTIONS) requests for all routes
+
 app.options("*", cors({
   origin: allowedOrigins,
   credentials: true,
 }));
 
-// ✅ Apply auth middleware
+
 app.use("/auth/*", auth);
 
-// ✅ Add session to every request
+
 app.use(async (req, res, next) => {
   res.locals.session = await getSession(req, authConfig);
   next();
 });
 
-// ✅ Setup Apollo Server
+
 const server = new ApolloServer({
   schema,
   context: ({ res }) => {
@@ -49,7 +49,7 @@ const server = new ApolloServer({
 });
 
 server.start().then(() => {
-  // ✅ Disable Apollo's internal CORS — we're handling it above
+  
   server.applyMiddleware({ app, path: "/graphql", cors: false });
 
   app.get("/", (req, res) => {
