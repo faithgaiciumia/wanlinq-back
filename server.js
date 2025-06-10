@@ -15,11 +15,14 @@ app.set("trust proxy", true);
 
 // CORS setup
 app.use(
+  "/auth/*",
   cors({
     origin: ["http://localhost:5173", "https://quicklinq.netlify.app"],
     credentials: true,
-  })
+  }),
+  auth
 );
+
 
 // apply auth middleware
 app.use("/auth/*", auth);
