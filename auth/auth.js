@@ -11,7 +11,7 @@ const resend = new Resend(process.env.AUTH_RESEND_KEY);
 const client = new MongoClient(process.env.MONGOOSE_CONNECT_STRING);
 
 const authConfig = {
-  trustHost:true,
+  trustHost: true,
   adapter: MongoDBAdapter(client),
   providers: [
     {
@@ -33,6 +33,17 @@ const authConfig = {
   ],
   secret: process.env.AUTH_SECRET,
   basePath: "/auth",
+  cookies: {
+    sessionToken: {
+      name: "__Secure-authjs.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "none", // Needed for cross-origin
+        path: "/",
+        secure: true, // Required on HTTPS (Render)
+      },
+    },
+  },
   callbacks: {
     async redirect({ url }) {
       // const frontend = "http://localhost:5173/";
