@@ -13,28 +13,29 @@ dotenv.config();
 const app = express();
 app.set("trust proxy", true);
 
-// CORS setup
-app.use(
-  "/auth/*",
-  cors({
-    origin: ["http://localhost:5173", "https://quicklinq.netlify.app"],
-    credentials: true,
-  }),
-  auth
-);
+// ✅ Apply CORS globally (for all routes)
+const allowedOrigins = ["http://localhost:5173", "https://quicklinq.netlify.app"];
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 
+// ✅ Handle preflight (OPTIONS) requests for all routes
+app.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 
-// apply auth middleware
+// ✅ Apply auth middleware
 app.use("/auth/*", auth);
 
-// Now getSession will work for all routes
-export async function authSession(req, res, next) {
+// ✅ Add session to every request
+app.use(async (req, res, next) => {
   res.locals.session = await getSession(req, authConfig);
   next();
-}
+});
 
-app.use(authSession);
-
+// ✅ Setup Apollo Server
 const server = new ApolloServer({
   schema,
   context: ({ res }) => {
@@ -48,6 +49,7 @@ const server = new ApolloServer({
 });
 
 server.start().then(() => {
+  // ✅ Disable Apollo's internal CORS — we're handling it above
   server.applyMiddleware({ app, path: "/graphql", cors: false });
 
   app.get("/", (req, res) => {
@@ -55,7 +57,6 @@ server.start().then(() => {
   });
 
   const PORT = process.env.PORT || 4000;
-
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://0.0.0.0:${PORT}`);
   });
