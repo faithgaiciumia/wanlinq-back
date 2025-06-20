@@ -12,6 +12,13 @@ schemaComposer.Query.addFields({
       return await User.findOne({ email: email });
     },
   },
+  getUserByUsername: {
+    type: UserTC,
+    args: { username: "String!" },
+    resolve: async (_, { username }) => {
+      return await User.findOne({ username: username });
+    },
+  },
   getCurrentUser: {
     type: UserTC,
     resolve: async (_, __, context) => {

@@ -55,7 +55,7 @@ const authConfig = {
     csrfToken: {
       name: `__Host-authjs.csrf-token`,
       options: {
-        sameSite: "none", // THIS IS CRITICAL
+        sameSite: "none", 
         path: "/",
         secure: true,
         httpOnly: true,
